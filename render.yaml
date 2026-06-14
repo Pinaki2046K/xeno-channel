@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: xeno-channel
+    runtime: node
+    plan: free
+    region: oregon
+    # --include=dev forces typescript/@types even though NODE_ENV=production skips them
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MAX_CONCURRENCY
+        value: "50"
+      - key: RETRY_ATTEMPTS
+        value: "3"
+      - key: RETRY_DELAY_MS
+        value: "2000"
+      # Secrets — set these in the Render dashboard (sync: false keeps them out of git)
+      - key: CHANNEL_SERVICE_SECRET
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: ARIA_CALLBACK_URL
+        sync: false
+      - key: ALLOWED_ORIGIN
+        sync: false
