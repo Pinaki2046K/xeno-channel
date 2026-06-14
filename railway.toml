@@ -1,6 +1,7 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm run build"
+# Force dev deps (typescript/@types) since NODE_ENV=production makes npm skip them
+buildCommand = "npm install --include=dev && npm run build"
 
 [deploy]
 startCommand = "npm start"
